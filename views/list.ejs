@@ -1,31 +1,36 @@
 <%- include("partials/header.ejs") %>
-    <div class="box" id="heading">
-        <h1> <%=listTitle%></h1>
+<div class="box" id="heading">
+    <h1> <%=listTitle%></h1>
 
 
-    </div>
+</div>
 
-    <div class="box">
-
-        <!-- loop through newItemsList and add each item to a new <p> -->
-        <% for (let i = 0; i < newListItems.length; i++) { %>
+<div class="box">
+<!-- ES6 implementation of forEach method on array of returned documents form db  -->
+    <% newListItems.forEach(function(item){ %>
+<!-- initate POST to /delete route on check -->
+    <form action = "/delete" method = "post">
         <div class="item">
-            <input type="checkbox">
-            <p><%= newListItems[i] %></p>
+            <!-- Initiate POST request only on change (when checkbox gets selected) -->
+            <input type="checkbox" name = "checkbox" value = "<%=item._id%>" onChange ="this.form.submit()">
+            <!-- only display name from returned document data -->
+            <p><%= item.name %></p>
 
         </div>
+    </form>
+    <% }) %>
 
-        <% } %>
+    <!-- loop through newItemsList and add each item to a new <p> -->
 
-        <!-- perform a post request with inputed infomation  -->
-        <form class="item" action="/" , method="post">
-            <input type="text" name="newItem" placeholder="Add your task" autocomplete="off"><br>
-            <!-- use ejs variable to direct which list to POST to  -->
-            <button type="submit" name ="listAddition" value= <%= listTitle %>  method="post">+</button>
 
-        </form>
+    <!-- perform a post request with inputed infomation  -->
+    <form class="item" action="/" , method="post">
+        <input type="text" name="newItem" placeholder="Add your task" autocomplete="off"><br>
+        <!-- use ejs variable to direct which list to POST to  -->
+        <button type="submit" name="listAddition" value=<%= listTitle %> method="post">+</button>
 
-    </div>
+    </form>
 
-    <%- include("partials/footer.ejs") %>
+</div>
 
+<%- include("partials/footer.ejs") %>
